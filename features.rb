@@ -72,31 +72,31 @@ get '/' do
 end
 
 get '/:id' do
-	feature = Feature.get(params[:id])
-	builder do |xml|
-    xml.instruct!
-    xml.feature do
-      xml.name feature.description.name
-      xml.value feature.value
-    end
-  end
+	begin
+		feature = Feature.get(params[:id])
+		builder do |xml|
+			xml.instruct!
+			xml.feature do
+				xml.name feature.description.name
+				xml.value feature.value
+			end
+		end
+	rescue
+		status 404
+		"Cannot find feature with ID #{params[:id]}."
+	end
 end
 
 post '/' do
 	protected!
-	description = Description.find_or_create :name => params[:name]
-	feature = Feature.find_or_create(:value => params[:value].to_s, :description_id => description.id)
-	#puts feature.to_yaml
-	#feature = Feature.new(:value => params[:value].to_s, :description_id => description.id) unless feature.nil?
-	# create association with user
-	
-	#feature.save
-	#unless description.nil? or feature.nil?
+	begin
+		description = Description.find_or_create :name => params[:name]
+		feature = Feature.find_or_create(:value => params[:value].to_s, :description_id => description.id)
 		url_for("/", :full) + feature.id.to_s
-	#else
-		#status 500
-		#"Failed to create new feature."
-	#end
+	rescue
+		status 500
+		"Failed to create new feature."
+	end
 end
 
 delete '/:id' do
