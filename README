@@ -1,0 +1,14 @@
+OpenTox Features
+=================
+
+* Provides canonical URIs for features in the form /feature_name/feature_value
+
+* Does not store them permanently in a database
+
+* Implements a subset of the OpenTox feature API (http://opentox.org/wiki/opentox/Feature).
+
+* Requirements:
+
+	- Sinatra (http://www.sinatrarb.com/),
+	- sinatra-url-for (http://github.com/emk/sinatra-url-for/)
+	- Rack::Test (http://github.com/brynary/rack-test/) for the tests
