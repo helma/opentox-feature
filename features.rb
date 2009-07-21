@@ -1,116 +1,40 @@
 ## SETUP
-[ 'rubygems', 'sinatra', 'rest_client', 'sinatra/url_for', 'datamapper', 'dm-more', 'do_sqlite3', 'builder', 'api_key' ].each do |lib|
+[ 'rubygems', 'sinatra', 'sinatra/url_for', 'builder' ].each do |lib|
 	require lib
-end
-
-# reload
-
-## MODELS
-#require 'models'
-class Feature
-	include DataMapper::Resource
-	property :id, Serial
-	property :value, String
-	belongs_to :description
-	#has n, :users, :through => Resource
-end
-
-class Description
-	include DataMapper::Resource
-	property :id, Serial
-	property :name, String
-	has n, :features
-end
-
-=begin
-class User
-	include DataMapper::Resource
-	property :id, Serial
-	property :name, String, :unique => true
-	has n, :features, :through => Resource
-end
-=end
-
-# automatically create the tables
-configure :test do 
-	DataMapper.setup(:default, 'sqlite3::memory:')
-	[Feature, Description].each do |model|
-		model.auto_migrate!
-	end
-end
-
-@db = "features.sqlite3"
-configure :development, :production do
-	DataMapper::setup(:default, "sqlite3://#{Dir.pwd}/#{@db}")
-	unless FileTest.exists?("#{@db}")
-		[Feature, Description].each do |model|
-			model.auto_migrate!
-		end
-	end
-	puts @db
-end
-
-## Authentification
-helpers do
-
-  def protected!
-    response['WWW-Authenticate'] = %(Basic realm="Testing HTTP Auth") and \
-    throw(:halt, [401, "Not authorized\n"]) and \
-    return unless authorized?
-  end
-
-  def authorized?
-    @auth ||=  Rack::Auth::Basic::Request.new(request.env)
-    @auth.provided? && @auth.basic? && @auth.credentials && @auth.credentials == ['api', API_KEY]
-  end
-
 end
 
 ## REST API
 get '/' do
-	Feature.all.collect{ |f| url_for("/", :full) + f.id.to_s }.join("\n")
+	status 404
+	"No index available for this component."
 end
 
-get '/:id' do
+get '/:name/:value' do
 	begin
-		feature = Feature.get(params[:id])
 		builder do |xml|
 			xml.instruct!
 			xml.feature do
-				xml.name feature.description.name
-				xml.value feature.value
+				xml.name params[:name]
+				xml.value params[:value]
 			end
 		end
 	rescue
-		status 404
-		"Cannot find feature with ID #{params[:id]}."
+		status 500
+		"Cannot create XML."
 	end
 end
 
+# return canonical uri
 post '/' do
-	protected!
 	begin
-		description = Description.find_or_create :name => params[:name]
-		feature = Feature.find_or_create(:value => params[:value].to_s, :description_id => description.id)
-		url_for("/", :full) + feature.id.to_s
+		url_for("/", :full) + URI.encode(params[:name]) + '/' + URI.encode(params[:value])
 	rescue
 		status 500
-		"Failed to create new feature."
+		"Failed to create canonical URI for name #{params[:name]} and value #{params[:value]}."
 	end
 end
 
-delete '/:id' do
-	protected!
-	# dangerous, because other datasets might refer to it
-	status 401
-	"You can not delete features, because other datasets might need them."
-	# maybe
-	#client = referrer.uri
-	#feature = Feature.get(:id)
-	# delete association
-	#feature.destroy if feature.referenceѕ.nil?
+delete '/*' do
+	status 404
+	"Cannot delete - features are not stored permanently"
 end
-
-#post '/user' do
-	#protected_by_root!
-#end
