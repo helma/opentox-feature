@@ -1,11 +1,17 @@
 OpenTox Features
 =================
 
+* An OpenTox REST Webservice
+
 * Provides canonical URIs for features in the form /feature_name/feature_value
 
 * Does not store them permanently in a database
 
 * Implements a subset of the OpenTox feature API (http://opentox.org/wiki/opentox/Feature).
+
+* Runs at http://webservices.in-silico.ch/features
+
+* No documentation yet, have a look at features.rb - it should be self-explanatory.
 
 * Requirements:
 
