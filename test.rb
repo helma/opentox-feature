@@ -1,5 +1,4 @@
 ENV['RACK_ENV'] = 'test'
-`rm -f test.sqlite3`
 require 'features'
 require 'test/unit'
 require 'rack/test'

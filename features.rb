@@ -3,16 +3,6 @@
 	require lib
 end
 
-@db = "features.sqlite3"
-
-configure :test do
-	@db = "test.sqlite3"
-end
-
-DataMapper::setup(:default, "sqlite3://#{Dir.pwd}/#{@db}")
-
-puts @db
-
 # reload
 
 ## MODELS
@@ -42,10 +32,22 @@ end
 =end
 
 # automatically create the tables
-unless FileTest.exists?("#{@db}")
+configure :test do 
+	DataMapper.setup(:default, 'sqlite3::memory:')
 	[Feature, Description].each do |model|
 		model.auto_migrate!
 	end
+end
+
+@db = "features.sqlite3"
+configure :development, :production do
+	DataMapper::setup(:default, "sqlite3://#{Dir.pwd}/#{@db}")
+	unless FileTest.exists?("#{@db}")
+		[Feature, Description].each do |model|
+			model.auto_migrate!
+		end
+	end
+	puts @db
 end
 
 ## Authentification

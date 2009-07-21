@@ -1,3 +1,2 @@
 api_key.rb
-features.sqlite3
-test.sqlite3
+*.sqlite3
