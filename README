@@ -3,18 +3,54 @@ OpenTox Features
 
 * An OpenTox REST Webservice
 
-* Provides canonical URIs for features in the form /feature_name/feature_value
-
-* Does not store them permanently in a database
+* Provides canonical URIs for features in the form /{feature_name}/{property_name}/{property_value} (further properties can be appended if necessary)
 
 * Implements a subset of the OpenTox feature API (http://opentox.org/wiki/opentox/Feature).
 
 * Runs at http://webservices.in-silico.ch/features
 
-* No documentation yet, have a look at features.rb - it should be self-explanatory.
+REST API
 
-* Requirements:
+Description               Method  URI                   Parameters    Result          					Status codes
 
-	- Sinatra (http://www.sinatrarb.com/),
-	- sinatra-url-for (http://github.com/emk/sinatra-url-for/)
-	- Rack::Test (http://github.com/brynary/rack-test/) for the tests
+Get an XML representation GET     /{id}                               XML representation				200, 500
+of the feature																												of the feature
+
+Create a canonical URI    POST    /                     name, values  URI for the new feature		200, 500
+for a new feature                                       
+
+The parameter 'values' accepts a hash for nested parameters, see EXAMPLES for details.
+
+Get the feature name      GET     /{id}/name                          feature name 							200, 500
+
+Get the property value    GET     /{id}/(property_name}               property value						200, 500
+
+Indexing (i.e. GET /) and deletion operations are not supported, because objects are not stored.
+
+EXAMPLES
+
+Create an URI for a Smarts substructure:
+
+  curl -X POST -d name='NN' -d values[p_value]=0.9 -d values[effect]=activating http://webservices.in-silico.ch/features
+
+Get a XML representation of a feature:
+
+  curl http://webservices.in-silico.ch/features/Rodent%20carcinogenicity/classification/active
+
+Get the feature name:
+
+  curl http://webservices.in-silico.ch/features/Rodent%20carcinogenicity/classification/active/name
+
+Get the classification name:
+
+  curl http://webservices.in-silico.ch/features/Rodent%20carcinogenicity/classification/active/name
+
+Get the p_value of a Smarts featrue:
+
+  curl http://webservices.in-silico.ch/features/NN/p_value/0.9/effect/activating/p_value
+
+INSTALLATION
+
+Run 'rake install' to install the required gems
+
+Copyright (c) 2009 Christoph Helma. See LICENSE for details.
