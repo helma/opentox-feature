@@ -3,7 +3,7 @@ require 'rake'
 
 desc "Install required gems"
 task :install do
-	`sudo gem install sinatra builder`
+	puts `sudo gem install sinatra builder`
 end
 
 desc "Run tests"
