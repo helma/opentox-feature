@@ -11,6 +11,7 @@ end
 get '/:name/*/:property' do
 	items = params[:splat][0].split(/\//)
 	i = items.index(params[:property])
+	pass unless i
 	items[i+1]
 end
 
