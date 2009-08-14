@@ -11,19 +11,19 @@ OpenTox Features
 
 REST API
 
-Description               Method  URI                   Parameters    Result          					Status codes
+Description               Method  URI                   Parameters    Result                    Status codes
 
-Get an XML representation GET     /{id}                               XML representation				200, 500
-of the feature																												of the feature
+Get an XML representation GET     /{id}                               XML representation        200, 500
+of the feature                                                        of the feature
 
-Create a canonical URI    POST    /                     name, values  URI for the new feature		200, 500
+Create a canonical URI    POST    /                     name, values  URI for the new feature   200, 500
 for a new feature                                       
 
 The parameter 'values' accepts a hash for nested parameters, see EXAMPLES for details.
 
-Get the feature name      GET     /{id}/name                          feature name 							200, 500
+Get the feature name      GET     /{id}/name                          feature name              200, 500
 
-Get the property value    GET     /{id}/(property_name}               property value						200, 500
+Get the property value    GET     /{id}/(property_name}               property value            200, 500
 
 Indexing (i.e. GET /) and deletion operations are not supported, because objects are not stored.
 
