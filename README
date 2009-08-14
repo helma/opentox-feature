@@ -7,7 +7,7 @@ OpenTox Features
 
 * Implements a subset of the OpenTox feature API (http://opentox.org/wiki/opentox/Feature).
 
-* Runs at http://webservices.in-silico.ch/features
+* Current version runs at http://webservices.in-silico.ch/feature/v0
 
 REST API
 
@@ -31,23 +31,23 @@ EXAMPLES
 
 Create an URI for a Smarts substructure:
 
-  curl -X POST -d name='NN' -d values[p_value]=0.9 -d values[effect]=activating http://webservices.in-silico.ch/features
+  curl -X POST -d name='NN' -d values[p_value]=0.9 -d values[effect]=activating http://webservices.in-silico.ch/feature/v0
 
 Get a XML representation of a feature:
 
-  curl http://webservices.in-silico.ch/features/Rodent%20carcinogenicity/classification/active
+  curl http://webservices.in-silico.ch/feature/v0/Rodent%20carcinogenicity/classification/active
 
 Get the feature name:
 
-  curl http://webservices.in-silico.ch/features/Rodent%20carcinogenicity/classification/active/name
+  curl http://webservices.in-silico.ch/feature/v0/Rodent%20carcinogenicity/classification/active/name
 
 Get the classification name:
 
-  curl http://webservices.in-silico.ch/features/Rodent%20carcinogenicity/classification/active/name
+  curl http://webservices.in-silico.ch/feature/v0/Rodent%20carcinogenicity/classification/active/classification
 
 Get the p_value of a Smarts featrue:
 
-  curl http://webservices.in-silico.ch/features/NN/p_value/0.9/effect/activating/p_value
+  curl http://webservices.in-silico.ch/feature/v0/NN/p_value/0.9/effect/activating/p_value
 
 INSTALLATION
 

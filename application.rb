@@ -36,7 +36,7 @@ get '/:name/*' do
 	end
 end
 
-post '/' do
+post '/?' do
 	uri = url_for("/#{URI.encode(params[:name])}", :full)
 	params[:values].each do |k,v|
 		uri += '/' + URI.encode(k) + '/' + v
