@@ -23,6 +23,8 @@ get '/:name/*' do
 		values[key_value_pairs[i]] = key_value_pairs[i+1]
 		i += 2
 	end
+	values.to_yaml
+=begin
 	builder do |xml|
 		xml.instruct!
 		xml.feature do
@@ -35,6 +37,7 @@ get '/:name/*' do
 			end
 		end
 	end
+=end
 end
 
 post '/?' do
