@@ -13,7 +13,7 @@ REST API
 
 Description               Method  URI                   Parameters    Result                    Status codes
 
-Get an XML representation GET     /{id}                               XML representation        200, 500
+Get an YAML representation GET     /{id}                               YAML representation        200, 500
 of the feature                                                        of the feature
 
 Create a canonical URI    POST    /                     name, values  URI for the new feature   200, 500
@@ -33,7 +33,7 @@ Create an URI for a Smarts substructure:
 
   curl -X POST -d name='NN' -d values[p_value]=0.9 -d values[effect]=activating http://webservices.in-silico.ch/feature/v0
 
-Get a XML representation of a feature:
+Get a YAML representation of a feature:
 
   curl http://webservices.in-silico.ch/feature/v0/Rodent%20carcinogenicity/classification/active
 
