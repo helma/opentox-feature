@@ -1,7 +1,9 @@
 ## SETUP
-[ 'rubygems', 'sinatra', 'sinatra/url_for', 'builder' ].each do |lib|
+[ 'rubygems', 'sinatra', 'sinatra/url_for', 'sinatra/respond_to', 'builder' ].each do |lib|
 	require lib
 end
+
+set :default_content, :yaml
 
 ## REST API
 get '/:name/*/name' do
@@ -15,29 +17,22 @@ get '/:name/*/:property' do
 	items[i+1]
 end
 
-get '/:name/*' do
+get '/:name/*/?' do
+
+	@feature = {}
+	@feature['name'] = params[:name]
 	key_value_pairs = params[:splat][0].split(/\//)
 	i = 0
-	values = {}
 	while i < key_value_pairs.size do
-		values[key_value_pairs[i]] = key_value_pairs[i+1]
+		@feature[key_value_pairs[i]] = key_value_pairs[i+1]
 		i += 2
 	end
-	values.to_yaml
-=begin
-	builder do |xml|
-		xml.instruct!
-		xml.feature do
-			xml.name URI.decode(params[:name])
-			values.each do |k,v|
-				xml.property do
-					xml.name k
-					xml.value v
-				end
-			end
-		end
+
+	respond_to do |format|
+		format.yaml { @feature.to_yaml }
+		format.xml {  builder :feature }
 	end
-=end
+
 end
 
 post '/?' do
